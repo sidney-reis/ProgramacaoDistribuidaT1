@@ -7,26 +7,27 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class Jogador {
-    public int id;
-    public String nome;
-    public Partida partidaAtual;
+    int id;
+    String nome;
+    Partida partidaAtual;
 
-    public Jogador(int id, String nome) {
+    Jogador(int id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 }
 
 class Partida {
-    public Jogador jogador1;
-    public Jogador jogador2;
-    public char[][] tabuleiro;
-    public int[] quantidadeOrificio;
-    public int[] ultimasJogadas; // [ Posição da última jogada | Posição da penúltima jogada ]
-    public int estado;
+    Jogador jogador1;
+    Jogador jogador2;
+    char[][] tabuleiro;
+    int[] quantidadeOrificio;
+    int[] ultimasJogadas; // [ Posição da última jogada | Posição da penúltima jogada ]
+    int estado;
 
     public Partida() {
         for (int i = 0; i < 5; i++) {
@@ -41,11 +42,10 @@ class Partida {
 }
 
 public class DownUnder extends UnicastRemoteObject implements DownUnderInterface {
-    private final int maxPartidas = 50;
     private ArrayList<Partida> partidas = new ArrayList<>();
 
     private int jogadoresCount = 0;
-    Map<Integer, Jogador> jogadores = new HashMap<Integer, Jogador>();
+    private Map<Integer, Jogador> jogadores = new HashMap<Integer, Jogador>();
 
     private static AtomicInteger idCounter = new AtomicInteger();
 
@@ -54,18 +54,20 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
     //TODO: rever métodos para incluir timeout e synchronized
 
-    public static int novoIdJogador() {
+    private static int novoIdJogador() {
         return idCounter.getAndIncrement();
     }
 
     @Override
     public int registraJogador(String jogador) throws RemoteException {
+        //TODO: adicionar jogador em uma partida e realizar checagem se é o segundo jogador. caso seja, iniciar partida
+        int maxPartidas = 50;
         if (jogadoresCount == (maxPartidas * 2)) {
             return -2;
         }
 
         for (Integer key : jogadores.keySet()) {
-            if (jogadores.get(key).nome == jogador) {
+            if (Objects.equals(jogadores.get(key).nome, jogador)) {
                 return -1;
             }
         }
@@ -193,9 +195,9 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
             return 0; // Movimento inválido: orifício já foi preenchido
         }
 
-        char peca = 'C';
+        char peca = 'C'; // Claras
         if (partida.jogador2.id == jogador.id) {
-            peca = 'E';
+            peca = 'E'; // Escuras
         }
 
         partida.tabuleiro[orificioTorre][7 - partida.quantidadeOrificio[orificioTorre]] = peca;
