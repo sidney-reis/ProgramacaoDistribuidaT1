@@ -24,7 +24,7 @@ class Jogador {
 class Partida {
     Jogador jogador1;
     Jogador jogador2;
-    char[][] tabuleiro;
+    char[][] tabuleiro = new char[5][8];
     int[] quantidadeOrificio; // Quantas peças foram colocadas em cada orifício
     int[] ultimasJogadas; // [ Posição da última jogada | Posição da penúltima jogada ]
     int estado; // 0: Não há 2 jogadores ainda. / 1: Vez do jogador 1. / 2: vez do jogador 2.
