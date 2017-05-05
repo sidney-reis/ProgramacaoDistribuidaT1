@@ -25,9 +25,9 @@ class Partida {
     Jogador jogador1;
     Jogador jogador2;
     char[][] tabuleiro;
-    int[] quantidadeOrificio;
+    int[] quantidadeOrificio; // Quantas peças foram colocadas em cada orifício
     int[] ultimasJogadas; // [ Posição da última jogada | Posição da penúltima jogada ]
-    int estado;
+    int estado; // 0: Não há 2 jogadores ainda. / 1: Vez do jogador 1. / 2: vez do jogador 2.
 
     public Partida() {
         for (int i = 0; i < 5; i++) {
@@ -37,13 +37,13 @@ class Partida {
         }
         quantidadeOrificio = new int[]{0, 0, 0, 0, 0};
         ultimasJogadas = new int[]{-1, -1};
-        this.estado = 0; // 0: Não há 2 jogadores ainda. / 1: Vez do jogador 1. / 2: vez do jogador 2.
+        this.estado = 0;
     }
 }
 
 public class DownUnder extends UnicastRemoteObject implements DownUnderInterface {
     private ArrayList<Partida> partidas = new ArrayList<>();
-
+    private Partida ultimaPartidaCriada;
     private int jogadoresCount = 0;
     private Map<Integer, Jogador> jogadores = new HashMap<Integer, Jogador>();
 
@@ -60,21 +60,30 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
     @Override
     public int registraJogador(String jogador) throws RemoteException {
-        //TODO: adicionar jogador em uma partida e realizar checagem se é o segundo jogador. caso seja, iniciar partida
         int maxPartidas = 50;
         if (jogadoresCount == (maxPartidas * 2)) {
-            return -2;
+            return -2; // Máximo de jogadores atingido
         }
 
         for (Integer key : jogadores.keySet()) {
-            if (Objects.equals(jogadores.get(key).nome, jogador)) {
-                return -1;
+            if (jogadores.get(key).nome.equals(jogador)) {
+                return -1; // Nome já existe
             }
         }
 
         Jogador novoJogador = new Jogador(novoIdJogador(), jogador);
         jogadores.put(novoJogador.id, novoJogador);
 
+        if(jogadoresCount % 2 == 0) {
+            ultimaPartidaCriada = new Partida();
+            ultimaPartidaCriada.jogador1 = novoJogador;
+            partidas.add(ultimaPartidaCriada);
+        } else {
+            ultimaPartidaCriada.jogador2 = novoJogador;
+            ultimaPartidaCriada.estado = 1;
+        }
+
+        jogadoresCount++;
         return novoJogador.id;
     }
 
