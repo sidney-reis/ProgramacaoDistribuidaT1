@@ -148,7 +148,6 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
     @Override
     public String obtemTabuleiro(int idJogador) throws RemoteException {
-        //TODO: pontuação final
         Partida partida = jogadores.get(idJogador).partidaAtual;
         StringBuilder topoTabuleiro = new StringBuilder();
 
@@ -245,7 +244,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
             topoTabuleiro.append("Pontos do jogador "+partida.jogador1+" : "+pontosP1+"\n");
             topoTabuleiro.append("Pontos do jogador "+partida.jogador2+" : "+pontosP2+"\n");
-            
+
             return String.valueOf(topoTabuleiro);
         }
 
