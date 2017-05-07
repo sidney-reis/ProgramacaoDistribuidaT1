@@ -242,6 +242,10 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     contadorPecas = 0;
                 }
             }
+
+            topoTabuleiro.append("Pontos do jogador "+partida.jogador1+" : "+pontosP1+"\n");
+            topoTabuleiro.append("Pontos do jogador "+partida.jogador2+" : "+pontosP2+"\n");
+            
             return String.valueOf(topoTabuleiro);
         }
 
