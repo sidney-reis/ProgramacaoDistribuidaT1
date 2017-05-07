@@ -294,6 +294,8 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
         partida.tabuleiro[orificioTorre][7 - partida.quantidadeOrificio[orificioTorre]] = peca;
         partida.quantidadeOrificio[orificioTorre]++;
+        partida.ultimasJogadas[1] = partida.ultimasJogadas[0];
+        partida.ultimasJogadas[0] = orificioTorre;
 
         if(partida.estado == 2) {
             partida.estado = 1;

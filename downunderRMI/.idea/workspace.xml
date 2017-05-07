@@ -26,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DownUnder.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DownUnder.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DownUnder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="306" column="71" lean-forward="true" selection-start-line="306" selection-start-column="71" selection-end-line="306" selection-end-column="71" />
+            <state relative-caret-position="540">
+              <caret line="297" column="49" lean-forward="false" selection-start-line="297" selection-start-column="49" selection-end-line="297" selection-end-column="49" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -39,10 +39,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DownUnderClient.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DownUnderClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DownUnderClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
+            <state relative-caret-position="1258">
               <caret line="74" column="20" lean-forward="false" selection-start-line="74" selection-start-column="20" selection-end-line="74" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -86,6 +86,7 @@
       <find>ehminhavez</find>
       <find>ehMinhaVez</find>
       <find>nextint</find>
+      <find>ultimasJogadas</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -98,8 +99,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/DownUnderServer.java" />
         <option value="$PROJECT_DIR$/src/DownUnderInterface.java" />
-        <option value="$PROJECT_DIR$/src/DownUnder.java" />
         <option value="$PROJECT_DIR$/src/DownUnderClient.java" />
+        <option value="$PROJECT_DIR$/src/DownUnder.java" />
       </list>
     </option>
   </component>
@@ -512,22 +513,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DownUnder.java">
+    <entry file="file://$PROJECT_DIR$/src/DownUnderClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="306" column="71" lean-forward="true" selection-start-line="306" selection-start-column="71" selection-end-line="306" selection-end-column="71" />
+        <state relative-caret-position="1258">
+          <caret line="74" column="20" lean-forward="false" selection-start-line="74" selection-start-column="20" selection-end-line="74" selection-end-column="20" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DownUnderClient.java">
+    <entry file="file://$PROJECT_DIR$/src/DownUnder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="74" column="20" lean-forward="false" selection-start-line="74" selection-start-column="20" selection-end-line="74" selection-end-column="20" />
+        <state relative-caret-position="540">
+          <caret line="297" column="49" lean-forward="false" selection-start-line="297" selection-start-column="49" selection-end-line="297" selection-end-column="49" />
           <folding>
+            <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
