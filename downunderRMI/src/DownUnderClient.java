@@ -71,17 +71,10 @@ public class DownUnderClient {
 
                 String topoTorre = downunder.obtemTabuleiro(idJogador);
                 System.out.println("Sua vez. Estado do jogo:\n" + topoTorre + "\n\nEscolha a torre para inserir sua peça:");
-
-                int userInput = -1;
-
-                while (userInput == -1) {
-                    if (reader.hasNextInt()) {
-                        userInput = reader.nextInt();
-                    } else if (reader.hasNext()) {
-                        System.out.println("Valor informado é inválido. Insira novamente.");
-                    }
+                while (!reader.hasNextInt()) {
+                    reader.next();
                 }
-
+                int userInput = reader.nextInt();
                 int userMovement = downunder.soltaEsfera(idJogador, userInput);
 
                 while (userMovement != 1) {
