@@ -7,7 +7,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class Jogador {
@@ -82,6 +81,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
             ultimaPartidaCriada.jogador2 = novoJogador;
             ultimaPartidaCriada.estado = 1;
         }
+        novoJogador.partidaAtual = ultimaPartidaCriada;
 
         jogadoresCount++;
         return novoJogador.id;
@@ -148,6 +148,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
     @Override
     public String obtemTabuleiro(int idJogador) throws RemoteException {
+        //TODO: pontuação final
         Partida partida = jogadores.get(idJogador).partidaAtual;
         StringBuilder topoTabuleiro = new StringBuilder();
 
@@ -161,6 +162,85 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     topoTabuleiro.append(partida.tabuleiro[i][j]);
                 }
                 topoTabuleiro.append("\n");
+            }
+
+            int pontosP1 = 0;
+            int pontosP2 = 0;
+            int contadorPecas = 0;
+            char pecaAtual;
+
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 8; j++) {
+                    pecaAtual = partida.tabuleiro[i][j];
+
+                    while (contadorPecas < 4) {
+                        if (((i+contadorPecas+1) < 5) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j])) {
+                            contadorPecas++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (contadorPecas == 4) {
+                        if (pecaAtual == 'C') {
+                            pontosP1++;
+                        }
+                        else {
+                            pontosP2++;
+                        }
+                    }
+                    contadorPecas = 0;
+
+                    while (contadorPecas < 4) {
+                        if (((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i][j + contadorPecas + 1])) {
+                            contadorPecas++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (contadorPecas == 4) {
+                        if (pecaAtual == 'C') {
+                            pontosP1++;
+                        }
+                        else {
+                            pontosP2++;
+                        }
+                    }
+                    contadorPecas = 0;
+
+                    while (contadorPecas < 4) {
+                        if (((i+contadorPecas+1) < 5) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j + contadorPecas + 1])) {
+                            contadorPecas++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (contadorPecas == 4) {
+                        if (pecaAtual == 'C') {
+                            pontosP1++;
+                        }
+                        else {
+                            pontosP2++;
+                        }
+                    }
+                    contadorPecas = 0;
+
+                    while (contadorPecas < 4) {
+                        if (((i-contadorPecas-1) > -1) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i - contadorPecas - 1][j + contadorPecas + 1])) {
+                            contadorPecas++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (contadorPecas == 4) {
+                        if (pecaAtual == 'C') {
+                            pontosP1++;
+                        }
+                        else {
+                            pontosP2++;
+                        }
+                    }
+                    contadorPecas = 0;
+                }
             }
             return String.valueOf(topoTabuleiro);
         }
@@ -210,6 +290,13 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
         }
 
         partida.tabuleiro[orificioTorre][7 - partida.quantidadeOrificio[orificioTorre]] = peca;
+        partida.quantidadeOrificio[orificioTorre]++;
+
+        if(partida.estado == 2) {
+            partida.estado = 1;
+        } else if (partida.estado == 1) {
+            partida.estado = 2;
+        }
         return 1; // Movimento realizado
     }
 

@@ -22,6 +22,7 @@ public class DownUnderClient {
                 TimeUnit.SECONDS.sleep(1);
                 temPartida = downunder.temPartida(idJogador);
             }
+            //TODO: BUG: na segunda partida, começa mesmo sendo o jogador ímpar
             System.out.println("Partida criada, seu oponente é: "+downunder.obtemOponente(idJogador));
 
             char pecaJogador = 'C';
@@ -36,19 +37,22 @@ public class DownUnderClient {
                 System.out.println("Você joga primeiro.");
             }
             else {
-                System.out.println("Seu oponente joga primeiro. \nEsperando jogada do seu oponente...");
+                System.out.println("Seu oponente joga primeiro.");
             }
 
             int turno = 0;
             while (turno != 20) {
                 int vezDoJogador = downunder.ehMinhaVez(idJogador);
+                if (vezDoJogador != 1) {
+                    System.out.println("Esperando jogada do seu oponente...");
+                }
                 while (vezDoJogador != 1) {
                     TimeUnit.SECONDS.sleep(1);
                     vezDoJogador = downunder.ehMinhaVez(idJogador);
                 }
 
                 String topoTorre = downunder.obtemTabuleiro(idJogador);
-                System.out.println("Sua vez.\n\nEstado do jogo:\n" + topoTorre + "\n\nEscolha a torre para inserir sua peça:");
+                System.out.println("Sua vez. Estado do jogo:\n" + topoTorre + "\n\nEscolha a torre para inserir sua peça:");
                 int userInput = reader.nextInt();
                 int userMovement = downunder.soltaEsfera(idJogador, userInput);
 
@@ -61,7 +65,7 @@ public class DownUnderClient {
                     userInput = reader.nextInt();
                     userMovement = downunder.soltaEsfera(idJogador, userInput);
                 }
-                System.out.println("Movimento realizado. Estado do jogo:\n" + topoTorre);
+                System.out.println("Movimento realizado. \nEstado do jogo:\n" + topoTorre);
                 turno++;
             }
 
