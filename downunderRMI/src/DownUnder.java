@@ -242,8 +242,8 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                 }
             }
 
-            topoTabuleiro.append("Pontos do jogador "+partida.jogador1+" : "+pontosP1+"\n");
-            topoTabuleiro.append("Pontos do jogador "+partida.jogador2+" : "+pontosP2+"\n");
+            topoTabuleiro.append("Pontos do jogador "+partida.jogador1.nome+" : "+pontosP1+"\n");
+            topoTabuleiro.append("Pontos do jogador "+partida.jogador2.nome+" : "+pontosP2+"\n");
 
             return String.valueOf(topoTabuleiro);
         }
