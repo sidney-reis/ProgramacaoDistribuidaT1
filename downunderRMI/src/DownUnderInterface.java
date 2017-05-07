@@ -12,4 +12,8 @@ public interface DownUnderInterface extends Remote {
     String obtemTabuleiro(int idJogador) throws RemoteException;
     int soltaEsfera(int idJogador, int orificioTorre) throws RemoteException;
     String obtemOponente(int idJogador) throws RemoteException;
+
+    // Métodos de timer:
+    void iniciarTimerJogador(int idJogador) throws RemoteException;
+    boolean obtemTimeoutOponente(int idJogador) throws RemoteException;
 }

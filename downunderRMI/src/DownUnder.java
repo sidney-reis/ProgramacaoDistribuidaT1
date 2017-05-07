@@ -4,9 +4,7 @@
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class Jogador {
@@ -28,7 +26,14 @@ class Partida {
     int[] ultimasJogadas; // [ Posição da última jogada | Posição da penúltima jogada ]
     int estado; // 0: Não há 2 jogadores ainda. / 1: Vez do jogador 1. / 2: vez do jogador 2.
 
-    public Partida() {
+    int timerJogador1;
+    int timerJogador2;
+    boolean timeoutJogador1;
+    boolean timeoutJogador2;
+    boolean jogador1Jogou;
+    boolean jogador2Jogou;
+
+    Partida() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 8; j++) {
                 this.tabuleiro[i][j] = '-';
@@ -37,7 +42,15 @@ class Partida {
         quantidadeOrificio = new int[]{0, 0, 0, 0, 0};
         ultimasJogadas = new int[]{-1, -1};
         this.estado = 0;
+        this.timerJogador1 = 0;
+        this.timerJogador2 = 0;
+        this.timeoutJogador1 = false;
+        this.timeoutJogador2 = false;
+        this.jogador1Jogou = false;
+        this.jogador2Jogou = false;
     }
+
+
 }
 
 public class DownUnder extends UnicastRemoteObject implements DownUnderInterface {
@@ -45,7 +58,6 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
     private Partida ultimaPartidaCriada;
     private int jogadoresCount = 0;
     private Map<Integer, Jogador> jogadores = new HashMap<Integer, Jogador>();
-
     private static AtomicInteger idCounter = new AtomicInteger();
 
     public DownUnder() throws RemoteException {
@@ -55,6 +67,63 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
     private static int novoIdJogador() {
         return idCounter.getAndIncrement();
+    }
+
+    @Override
+    public void iniciarTimerJogador(int idJogador) throws RemoteException {
+        Jogador jogador = jogadores.get(idJogador);
+        Partida partida = jogador.partidaAtual;
+
+        final int numeroJogador;
+        if(idJogador == partida.jogador1.id) {
+            numeroJogador = 1;
+        }
+        else if(idJogador == partida.jogador2.id) {
+            numeroJogador = 2;
+        }
+        else {
+            return;
+        }
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(numeroJogador == 1) {
+                    partida.timerJogador1++;
+                    if (partida.jogador1Jogou) {
+                        partida.timerJogador1 = 0;
+                        partida.jogador1Jogou = false;
+                        t.cancel();
+                    } else if (partida.timerJogador1 == 60) {
+                        partida.timeoutJogador1 = true;
+                        t.cancel();
+                    }
+                } else {
+                    partida.timerJogador2++;
+                    if (partida.jogador2Jogou) {
+                        partida.timerJogador2 = 0;
+                        partida.jogador2Jogou = false;
+                        t.cancel();
+                    } else if (partida.timerJogador2 == 60) {
+                        partida.timeoutJogador2 = true;
+                        t.cancel();
+                    }
+                }
+            }
+        }, 0, 1000);
+    }
+
+    @Override
+    public boolean obtemTimeoutOponente(int idJogador) throws RemoteException {
+        Jogador jogador = jogadores.get(idJogador);
+        Partida partida = jogador.partidaAtual;
+
+        if (idJogador == partida.jogador1.id) {
+            return partida.timeoutJogador2;
+        }
+
+        return partida.timeoutJogador1;
     }
 
     @Override
@@ -272,6 +341,10 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
         Jogador jogador = jogadores.get(idJogador);
         Partida partida = jogador.partidaAtual;
 
+        if((partida.timeoutJogador1 && ((partida.jogador1.id == jogador.id))) || (partida.timeoutJogador2 && ((partida.jogador2.id == jogador.id)))) {
+            return 2;
+        }
+
         if (((partida.jogador1.id == jogador.id) && (partida.estado == 2)) ||
                 ((partida.jogador2.id == jogador.id) && (partida.estado == 1))) {
             return -3; // Não é a vez do jogador
@@ -285,6 +358,13 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
             return -1; // Número inválido de orifício
         } else if (partida.quantidadeOrificio[orificioTorre] == 8) {
             return 0; // Movimento inválido: orifício já foi preenchido
+        }
+
+        if (partida.jogador1.id == jogador.id) {
+            partida.jogador1Jogou = true;
+        }
+        else if (partida.jogador2.id == jogador.id) {
+            partida.jogador2Jogou = true;
         }
 
         char peca = 'C'; // Claras

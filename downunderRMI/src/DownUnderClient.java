@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class DownUnderClient {
     public static void main (String[] args) {
-
         if(args.length !=2) {
             System.out.println("Uso: java DownUnderClient <maquina> <nome do jogador>");
             System.exit(1);
@@ -62,6 +61,11 @@ public class DownUnderClient {
                 }
                 while (vezDoJogador != 1) {
                     TimeUnit.SECONDS.sleep(1);
+                    if(downunder.obtemTimeoutOponente(idJogador)) {
+                        System.out.println("Seu oponente ficou ocioso por 1 minuto. Você ganhou a partida!");
+                        downunder.encerraPartida(idJogador);
+                        System.exit(0);
+                    }
                     vezDoJogador = downunder.ehMinhaVez(idJogador);
                     if (vezDoJogador == -1) {
                         System.out.println("Erro ao tentar checar vez do jogador.");
@@ -71,12 +75,17 @@ public class DownUnderClient {
 
                 String topoTorre = downunder.obtemTabuleiro(idJogador);
                 System.out.println("Sua vez. Estado do jogo:\n" + topoTorre + "\n\nEscolha a torre para inserir sua peça:");
+                downunder.iniciarTimerJogador(idJogador);
                 while (!reader.hasNextInt()) {
                     reader.next();
                 }
                 int userInput = reader.nextInt();
                 int userMovement = downunder.soltaEsfera(idJogador, userInput);
 
+                if (userMovement == 2) {
+                    System.out.println("Você ficou ocioso por 60 segundos e por tanto perdeu a partida.");
+                    System.exit(0);
+                }
                 while (userMovement != 1) {
                     if (userMovement == -1) {
                         System.out.println("Posição da torre é inválida. Insira novamente:");
