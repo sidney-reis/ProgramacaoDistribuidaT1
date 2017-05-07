@@ -91,8 +91,8 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
     public int encerraPartida(int idJogador) throws RemoteException {
         try {
             Partida partida = jogadores.get(idJogador).partidaAtual;
-            jogadores.remove(partida.jogador1);
-            jogadores.remove(partida.jogador2);
+            jogadores.remove(partida.jogador1.id);
+            jogadores.remove(partida.jogador2.id);
             jogadoresCount -= 2;
 
             partidas.remove(partida);
@@ -172,14 +172,14 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                 for (int j = 0; j < 8; j++) {
                     pecaAtual = partida.tabuleiro[i][j];
 
-                    while (contadorPecas < 4) {
+                    while (contadorPecas < 3) {
                         if (((i+contadorPecas+1) < 5) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j])) {
                             contadorPecas++;
                         } else {
                             break;
                         }
                     }
-                    if (contadorPecas == 4) {
+                    if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
                         }
@@ -189,14 +189,14 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     }
                     contadorPecas = 0;
 
-                    while (contadorPecas < 4) {
+                    while (contadorPecas < 3) {
                         if (((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i][j + contadorPecas + 1])) {
                             contadorPecas++;
                         } else {
                             break;
                         }
                     }
-                    if (contadorPecas == 4) {
+                    if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
                         }
@@ -206,14 +206,14 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     }
                     contadorPecas = 0;
 
-                    while (contadorPecas < 4) {
+                    while (contadorPecas < 3) {
                         if (((i+contadorPecas+1) < 5) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j + contadorPecas + 1])) {
                             contadorPecas++;
                         } else {
                             break;
                         }
                     }
-                    if (contadorPecas == 4) {
+                    if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
                         }
@@ -223,14 +223,14 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     }
                     contadorPecas = 0;
 
-                    while (contadorPecas < 4) {
+                    while (contadorPecas < 3) {
                         if (((i-contadorPecas-1) > -1) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i - contadorPecas - 1][j + contadorPecas + 1])) {
                             contadorPecas++;
                         } else {
                             break;
                         }
                     }
-                    if (contadorPecas == 4) {
+                    if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
                         }

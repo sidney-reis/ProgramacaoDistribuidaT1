@@ -29,8 +29,8 @@
       <file leaf-file-name="DownUnder.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DownUnder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="472">
-              <caret line="245" column="75" lean-forward="false" selection-start-line="245" selection-start-column="75" selection-end-line="245" selection-end-column="75" />
+            <state relative-caret-position="453">
+              <caret line="94" column="21" lean-forward="false" selection-start-line="94" selection-start-column="21" selection-end-line="94" selection-end-column="21" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -87,6 +87,7 @@
       <find>ehMinhaVez</find>
       <find>nextint</find>
       <find>ultimasJogadas</find>
+      <find>jogadores</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -525,8 +526,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DownUnder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="245" column="75" lean-forward="false" selection-start-line="245" selection-start-column="75" selection-end-line="245" selection-end-column="75" />
+        <state relative-caret-position="453">
+          <caret line="94" column="21" lean-forward="false" selection-start-line="94" selection-start-column="21" selection-end-line="94" selection-end-column="21" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
