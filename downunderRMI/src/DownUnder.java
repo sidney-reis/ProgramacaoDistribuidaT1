@@ -337,13 +337,11 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
     @Override
     public int soltaEsfera(int idJogador, int orificioTorre) throws RemoteException {
-        //TODO: TIMEOUT: retorna 2 (partida encerrada, o que ocorrerá caso o jogador demore muito para enviar a sua jogada e ocorra o time­out de 60 segundos para envio de jogadas)
         Jogador jogador = jogadores.get(idJogador);
-        Partida partida = jogador.partidaAtual;
-
-        if((partida.timeoutJogador1 && ((partida.jogador1.id == jogador.id))) || (partida.timeoutJogador2 && ((partida.jogador2.id == jogador.id)))) {
-            return 2;
+        if(jogador == null) {
+            return 2; // Partida foi encerrada por timeout, por tanto o jogador não existe mais
         }
+        Partida partida = jogador.partidaAtual;
 
         if (((partida.jogador1.id == jogador.id) && (partida.estado == 2)) ||
                 ((partida.jogador2.id == jogador.id) && (partida.estado == 1))) {
