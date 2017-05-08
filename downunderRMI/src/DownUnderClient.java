@@ -29,6 +29,7 @@ public class DownUnderClient {
                 System.out.println("Erro ao criar partida.");
                 System.exit(-1);
             }
+            downunder.iniciarTimerPartida(idJogador);
             while (temPartida == 0) {
                 TimeUnit.SECONDS.sleep(1);
                 temPartida = downunder.temPartida(idJogador);

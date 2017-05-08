@@ -26,21 +26,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DownUnder.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DownUnder.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DownUnder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="99" column="28" lean-forward="true" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
+            <state relative-caret-position="506">
+              <caret line="433" column="0" lean-forward="false" selection-start-line="433" selection-start-column="0" selection-end-line="433" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#2513#3946#0" expanded="true" />
-                <element signature="e#3945#3946#0" expanded="true" />
-                <element signature="e#4557#4777#0" expanded="true" />
-                <element signature="e#4776#4777#0" expanded="true" />
+                <element signature="class#Jogador#0" expanded="false" />
+                <element signature="class#Partida#0" expanded="false" />
+                <element signature="method#DownUnder#0;class#DownUnder#0" expanded="false" />
+                <element signature="method#iniciarTimerJogador#0;class#DownUnder#0" expanded="false" />
+                <element signature="e#2511#3944#0" expanded="true" />
+                <element signature="e#3943#3944#0" expanded="true" />
+                <element signature="method#obtemTimeoutOponente#0;class#DownUnder#0" expanded="false" />
+                <element signature="method#iniciarTimerPartida#0;class#DownUnder#0" expanded="false" />
+                <element signature="e#4555#4775#0" expanded="true" />
+                <element signature="e#4774#4775#0" expanded="true" />
                 <element signature="method#registraJogador#0;class#DownUnder#0" expanded="false" />
-                <element signature="e#6055#6404#0" expanded="true" />
-                <element signature="e#6403#6404#0" expanded="true" />
+                <element signature="method#encerraPartida#0;class#DownUnder#0" expanded="false" />
+                <element signature="e#6140#6755#0" expanded="true" />
+                <element signature="e#6754#6755#0" expanded="true" />
                 <element signature="method#temPartida#0;class#DownUnder#0" expanded="false" />
                 <element signature="method#ehMinhaVez#0;class#DownUnder#0" expanded="false" />
                 <element signature="method#obtemTabuleiro#0;class#DownUnder#0" expanded="false" />
@@ -51,11 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DownUnderClient.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DownUnderClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DownUnderClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" column="37" lean-forward="true" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
+            <state relative-caret-position="425">
+              <caret line="31" column="12" lean-forward="false" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -101,6 +108,7 @@
       <find>tempartida</find>
       <find>60</find>
       <find>encerrapartida</find>
+      <find>iniciartimer</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -113,8 +121,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/DownUnderServer.java" />
         <option value="$PROJECT_DIR$/src/DownUnderInterface.java" />
-        <option value="$PROJECT_DIR$/src/DownUnder.java" />
         <option value="$PROJECT_DIR$/src/DownUnderClient.java" />
+        <option value="$PROJECT_DIR$/src/DownUnder.java" />
       </list>
     </option>
   </component>
@@ -410,7 +418,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -426,13 +434,20 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#2513#3946#0" expanded="true" />
-            <element signature="e#3945#3946#0" expanded="true" />
-            <element signature="e#4557#4777#0" expanded="true" />
-            <element signature="e#4776#4777#0" expanded="true" />
+            <element signature="class#Jogador#0" expanded="false" />
+            <element signature="class#Partida#0" expanded="false" />
+            <element signature="method#DownUnder#0;class#DownUnder#0" expanded="false" />
+            <element signature="method#iniciarTimerJogador#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#2511#3944#0" expanded="true" />
+            <element signature="e#3943#3944#0" expanded="true" />
+            <element signature="method#obtemTimeoutOponente#0;class#DownUnder#0" expanded="false" />
+            <element signature="method#iniciarTimerPartida#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#4555#4775#0" expanded="true" />
+            <element signature="e#4774#4775#0" expanded="true" />
             <element signature="method#registraJogador#0;class#DownUnder#0" expanded="false" />
-            <element signature="e#6055#6404#0" expanded="true" />
-            <element signature="e#6403#6404#0" expanded="true" />
+            <element signature="method#encerraPartida#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#6140#6755#0" expanded="true" />
+            <element signature="e#6754#6755#0" expanded="true" />
             <element signature="method#temPartida#0;class#DownUnder#0" expanded="false" />
             <element signature="method#ehMinhaVez#0;class#DownUnder#0" expanded="false" />
             <element signature="method#obtemTabuleiro#0;class#DownUnder#0" expanded="false" />
@@ -481,13 +496,20 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#2513#3946#0" expanded="true" />
-            <element signature="e#3945#3946#0" expanded="true" />
-            <element signature="e#4557#4777#0" expanded="true" />
-            <element signature="e#4776#4777#0" expanded="true" />
+            <element signature="class#Jogador#0" expanded="false" />
+            <element signature="class#Partida#0" expanded="false" />
+            <element signature="method#DownUnder#0;class#DownUnder#0" expanded="false" />
+            <element signature="method#iniciarTimerJogador#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#2511#3944#0" expanded="true" />
+            <element signature="e#3943#3944#0" expanded="true" />
+            <element signature="method#obtemTimeoutOponente#0;class#DownUnder#0" expanded="false" />
+            <element signature="method#iniciarTimerPartida#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#4555#4775#0" expanded="true" />
+            <element signature="e#4774#4775#0" expanded="true" />
             <element signature="method#registraJogador#0;class#DownUnder#0" expanded="false" />
-            <element signature="e#6055#6404#0" expanded="true" />
-            <element signature="e#6403#6404#0" expanded="true" />
+            <element signature="method#encerraPartida#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#6140#6755#0" expanded="true" />
+            <element signature="e#6754#6755#0" expanded="true" />
             <element signature="method#temPartida#0;class#DownUnder#0" expanded="false" />
             <element signature="method#ehMinhaVez#0;class#DownUnder#0" expanded="false" />
             <element signature="method#obtemTabuleiro#0;class#DownUnder#0" expanded="false" />
@@ -553,35 +575,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DownUnderClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="31" column="12" lean-forward="false" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/DownUnder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="99" column="28" lean-forward="true" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
+        <state relative-caret-position="506">
+          <caret line="433" column="0" lean-forward="false" selection-start-line="433" selection-start-column="0" selection-end-line="433" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#2513#3946#0" expanded="true" />
-            <element signature="e#3945#3946#0" expanded="true" />
-            <element signature="e#4557#4777#0" expanded="true" />
-            <element signature="e#4776#4777#0" expanded="true" />
+            <element signature="class#Jogador#0" expanded="false" />
+            <element signature="class#Partida#0" expanded="false" />
+            <element signature="method#DownUnder#0;class#DownUnder#0" expanded="false" />
+            <element signature="method#iniciarTimerJogador#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#2511#3944#0" expanded="true" />
+            <element signature="e#3943#3944#0" expanded="true" />
+            <element signature="method#obtemTimeoutOponente#0;class#DownUnder#0" expanded="false" />
+            <element signature="method#iniciarTimerPartida#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#4555#4775#0" expanded="true" />
+            <element signature="e#4774#4775#0" expanded="true" />
             <element signature="method#registraJogador#0;class#DownUnder#0" expanded="false" />
-            <element signature="e#6055#6404#0" expanded="true" />
-            <element signature="e#6403#6404#0" expanded="true" />
+            <element signature="method#encerraPartida#0;class#DownUnder#0" expanded="false" />
+            <element signature="e#6140#6755#0" expanded="true" />
+            <element signature="e#6754#6755#0" expanded="true" />
             <element signature="method#temPartida#0;class#DownUnder#0" expanded="false" />
             <element signature="method#ehMinhaVez#0;class#DownUnder#0" expanded="false" />
             <element signature="method#obtemTabuleiro#0;class#DownUnder#0" expanded="false" />
             <element signature="method#soltaEsfera#0;class#DownUnder#0" expanded="false" />
             <element signature="method#obtemOponente#0;class#DownUnder#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DownUnderClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="37" lean-forward="true" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

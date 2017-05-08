@@ -51,8 +51,6 @@ class Partida {
         this.jogador2Jogou = false;
         this.timer = 0;
     }
-
-
 }
 
 public class DownUnder extends UnicastRemoteObject implements DownUnderInterface {
@@ -182,6 +180,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
         novoJogador.partidaAtual = ultimaPartidaCriada;
 
         jogadoresCount++;
+        System.out.println("Jogador registrado: ID -> "+novoJogador.id+" | NOME -> "+novoJogador.nome);
         return novoJogador.id;
     }
 
@@ -189,15 +188,21 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
     public int encerraPartida(int idJogador) throws RemoteException {
         try {
             Jogador jogador = jogadores.get(idJogador);
-            Partida partida = jogadores.get(idJogador).partidaAtual;
+            Partida partida = jogador.partidaAtual;
 
             final Timer t = new Timer();
             t.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    System.out.println("Encerranto partida do jogador "+jogador.nome+".");
                     jogadores.remove(partida.jogador1.id);
-                    jogadores.remove(partida.jogador2.id);
-                    jogadoresCount -= 2;
+                    if(partida.jogador2 == null) {
+                        jogadoresCount -= 1;
+                    }
+                    else {
+                        jogadores.remove(partida.jogador2.id);
+                        jogadoresCount -= 2;
+                    }
 
                     partidas.remove(partida);
                     t.cancel();
@@ -230,6 +235,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
             return -1;
         } catch (Exception e) {
+            System.out.println("Erro ao tentar realizar o método 'temPartida'.");
             return -1;
         }
     }
@@ -252,6 +258,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
             return -1;
         } catch (Exception e) {
+            System.out.println("Erro ao tentar realizar o método 'ehMinhaVez'.");
             return -1;
         }
     }
@@ -283,7 +290,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     pecaAtual = partida.tabuleiro[i][j];
 
                     while (contadorPecas < 3) {
-                        if (((i+contadorPecas+1) < 5) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j])) {
+                        if (((i+contadorPecas+1) < 5) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j])) { // Checa se há 3 peças iguais abaixo
                             contadorPecas++;
                         } else {
                             break;
@@ -300,7 +307,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     contadorPecas = 0;
 
                     while (contadorPecas < 3) {
-                        if (((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i][j + contadorPecas + 1])) {
+                        if (((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na direita
                             contadorPecas++;
                         } else {
                             break;
@@ -317,7 +324,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     contadorPecas = 0;
 
                     while (contadorPecas < 3) {
-                        if (((i+contadorPecas+1) < 5) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j + contadorPecas + 1])) {
+                        if (((i+contadorPecas+1) < 5) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na diagonal \
                             contadorPecas++;
                         } else {
                             break;
@@ -334,7 +341,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     contadorPecas = 0;
 
                     while (contadorPecas < 3) {
-                        if (((i-contadorPecas-1) > -1) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i - contadorPecas - 1][j + contadorPecas + 1])) {
+                        if (((i-contadorPecas-1) > -1) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i - contadorPecas - 1][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na diagonal /
                             contadorPecas++;
                         } else {
                             break;
@@ -438,6 +445,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
             }
             return partida.jogador1.nome;
         } catch (Exception e) {
+            System.out.println("Erro ao tentar realizar o método 'obtemOponente'.");
             return "";
         }
     }
