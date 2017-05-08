@@ -6,26 +6,25 @@ import java.util.concurrent.TimeUnit;
  * Created by Sidney on 03-May-17.
  */
 public class DownUnderClient {
-    public static void main (String[] args) {
-        if(args.length !=2) {
+    public static void main(String[] args) {
+        if (args.length != 2) {
             System.out.println("Uso: java DownUnderClient <maquina> <nome do jogador>");
             System.exit(1);
         }
         try {
-            DownUnderInterface downunder = (DownUnderInterface) Naming.lookup("//"+args[0]+"/DownUnder");
+            DownUnderInterface downunder = (DownUnderInterface) Naming.lookup("//" + args[0] + "/DownUnder");
             Scanner reader = new Scanner(System.in);
             int idJogador = downunder.registraJogador(args[1]);
             if (idJogador == -2) {
                 System.out.println("Máximo de jogadores atingido.");
                 System.exit(-2);
-            }
-            else if (idJogador == -1) {
+            } else if (idJogador == -1) {
                 System.out.println("Nome já existente, tente outro.");
                 System.exit(-1);
             }
             System.out.println("Buscando oponente...");
             int temPartida = downunder.temPartida(idJogador);
-            if(temPartida == -1) {
+            if (temPartida == -1) {
                 System.out.println("Erro ao criar partida.");
                 System.exit(-1);
             }
@@ -34,7 +33,7 @@ public class DownUnderClient {
                 TimeUnit.SECONDS.sleep(1);
                 temPartida = downunder.temPartida(idJogador);
             }
-            if(temPartida == -2) {
+            if (temPartida == -2) {
                 System.out.println("Tempo de espera (2 minutos) esgotado.");
                 downunder.encerraPartida(idJogador);
                 System.exit(0);
@@ -67,7 +66,7 @@ public class DownUnderClient {
                 }
                 while (vezDoJogador != 1) {
                     TimeUnit.SECONDS.sleep(1);
-                    if(downunder.obtemTimeoutOponente(idJogador)) {
+                    if (downunder.obtemTimeoutOponente(idJogador)) {
                         System.out.println("Seu oponente ficou ocioso por 1 minuto. Você ganhou a partida!");
                         System.exit(0);
                     }
@@ -126,10 +125,9 @@ public class DownUnderClient {
 
             int fim = downunder.encerraPartida(idJogador);
 
-            if(fim == 0) {
+            if (fim == 0) {
                 System.out.println("Partida encerrada com sucesso.");
-            }
-            else if(fim == -1) {
+            } else if (fim == -1) {
                 System.out.println("Erro ao encerrar a partida.");
             }
         } catch (Exception e) {

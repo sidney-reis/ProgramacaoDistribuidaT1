@@ -54,16 +54,14 @@ class Partida {
 }
 
 public class DownUnder extends UnicastRemoteObject implements DownUnderInterface {
-    private ArrayList<Partida> partidas = new ArrayList<>();
     private Partida ultimaPartidaCriada;
     private int jogadoresCount = 0;
     private Map<Integer, Jogador> jogadores = new HashMap<Integer, Jogador>();
     private static AtomicInteger idCounter = new AtomicInteger();
+    private final Object jogadoresLock = new Object();
 
     public DownUnder() throws RemoteException {
     }
-
-    //TODO: rever métodos para incluir timeout e synchronized
 
     private static int novoIdJogador() {
         return idCounter.getAndIncrement();
@@ -75,13 +73,11 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
         Partida partida = jogador.partidaAtual;
 
         final int numeroJogador;
-        if(idJogador == partida.jogador1.id) {
+        if (idJogador == partida.jogador1.id) {
             numeroJogador = 1;
-        }
-        else if(idJogador == partida.jogador2.id) {
+        } else if (idJogador == partida.jogador2.id) {
             numeroJogador = 2;
-        }
-        else {
+        } else {
             return;
         }
 
@@ -89,7 +85,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(numeroJogador == 1) {
+                if (numeroJogador == 1) {
                     partida.timerJogador1++;
                     if (partida.jogador1Jogou) {
                         partida.timerJogador1 = 0;
@@ -146,41 +142,44 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
             @Override
             public void run() {
                 partida.timer++;
-                if(partida.timer >= 120) {
-                   t.cancel();
+                if (partida.timer >= 120) {
+                    t.cancel();
                 }
             }
         }, 0, 1000);
     }
 
     @Override
-    public int registraJogador(String jogador) throws RemoteException {
-        int maxPartidas = 50;
-        if (jogadoresCount == (maxPartidas * 2)) {
-            return -2; // Máximo de jogadores atingido
-        }
+    public synchronized int registraJogador(String jogador) throws RemoteException {
+        Jogador novoJogador;
 
-        for (Integer key : jogadores.keySet()) {
-            if (jogadores.get(key).nome.equals(jogador)) {
-                return -1; // Nome já existe
+        synchronized (jogadoresLock) {
+            int maxPartidas = 50;
+            if (jogadoresCount == (maxPartidas * 2)) {
+                return -2; // Máximo de jogadores atingido
             }
+
+            for (Integer key : jogadores.keySet()) {
+                if (jogadores.get(key).nome.equals(jogador)) {
+                    return -1; // Nome já existe
+                }
+            }
+
+            novoJogador = new Jogador(novoIdJogador(), jogador);
+            jogadores.put(novoJogador.id, novoJogador);
+
+            if (jogadoresCount % 2 == 0) {
+                ultimaPartidaCriada = new Partida();
+                ultimaPartidaCriada.jogador1 = novoJogador;
+            } else {
+                ultimaPartidaCriada.jogador2 = novoJogador;
+                ultimaPartidaCriada.estado = 1;
+            }
+            novoJogador.partidaAtual = ultimaPartidaCriada;
+
+            jogadoresCount++;
+            System.out.println("Jogador registrado: ID -> " + novoJogador.id + " | NOME -> " + novoJogador.nome);
         }
-
-        Jogador novoJogador = new Jogador(novoIdJogador(), jogador);
-        jogadores.put(novoJogador.id, novoJogador);
-
-        if(jogadoresCount % 2 == 0) {
-            ultimaPartidaCriada = new Partida();
-            ultimaPartidaCriada.jogador1 = novoJogador;
-            partidas.add(ultimaPartidaCriada);
-        } else {
-            ultimaPartidaCriada.jogador2 = novoJogador;
-            ultimaPartidaCriada.estado = 1;
-        }
-        novoJogador.partidaAtual = ultimaPartidaCriada;
-
-        jogadoresCount++;
-        System.out.println("Jogador registrado: ID -> "+novoJogador.id+" | NOME -> "+novoJogador.nome);
         return novoJogador.id;
     }
 
@@ -194,17 +193,17 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
             t.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    System.out.println("Encerranto partida do jogador "+jogador.nome+".");
-                    jogadores.remove(partida.jogador1.id);
-                    if(partida.jogador2 == null) {
-                        jogadoresCount -= 1;
-                    }
-                    else {
-                        jogadores.remove(partida.jogador2.id);
-                        jogadoresCount -= 2;
-                    }
+                    System.out.println("Encerranto partida do jogador " + jogador.nome + ".");
 
-                    partidas.remove(partida);
+                    synchronized (jogadoresLock) {
+                        jogadores.remove(partida.jogador1.id);
+                        if (partida.jogador2 == null) {
+                            jogadoresCount -= 1;
+                        } else {
+                            jogadores.remove(partida.jogador2.id);
+                            jogadoresCount -= 2;
+                        }
+                    }
                     t.cancel();
                 }
             }, 60000, 1000);
@@ -221,7 +220,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
             Jogador jogador = jogadores.get(idJogador);
             Partida partida = jogador.partidaAtual;
 
-            if(partida.timer >= 120) {
+            if (partida.timer >= 120) {
                 return -2;
             }
 
@@ -290,7 +289,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     pecaAtual = partida.tabuleiro[i][j];
 
                     while (contadorPecas < 3) {
-                        if (((i+contadorPecas+1) < 5) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j])) { // Checa se há 3 peças iguais abaixo
+                        if (((i + contadorPecas + 1) < 5) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j])) { // Checa se há 3 peças iguais abaixo
                             contadorPecas++;
                         } else {
                             break;
@@ -299,15 +298,14 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
-                        }
-                        else {
+                        } else {
                             pontosP2++;
                         }
                     }
                     contadorPecas = 0;
 
                     while (contadorPecas < 3) {
-                        if (((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na direita
+                        if (((j + contadorPecas + 1) < 8) && (pecaAtual == partida.tabuleiro[i][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na direita
                             contadorPecas++;
                         } else {
                             break;
@@ -316,15 +314,14 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
-                        }
-                        else {
+                        } else {
                             pontosP2++;
                         }
                     }
                     contadorPecas = 0;
 
                     while (contadorPecas < 3) {
-                        if (((i+contadorPecas+1) < 5) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na diagonal \
+                        if (((i + contadorPecas + 1) < 5) && ((j + contadorPecas + 1) < 8) && (pecaAtual == partida.tabuleiro[i + contadorPecas + 1][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na diagonal \
                             contadorPecas++;
                         } else {
                             break;
@@ -333,15 +330,14 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
-                        }
-                        else {
+                        } else {
                             pontosP2++;
                         }
                     }
                     contadorPecas = 0;
 
                     while (contadorPecas < 3) {
-                        if (((i-contadorPecas-1) > -1) && ((j+contadorPecas+1) < 8) && (pecaAtual == partida.tabuleiro[i - contadorPecas - 1][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na diagonal /
+                        if (((i - contadorPecas - 1) > -1) && ((j + contadorPecas + 1) < 8) && (pecaAtual == partida.tabuleiro[i - contadorPecas - 1][j + contadorPecas + 1])) { // Checa se há 3 peças iguais na diagonal /
                             contadorPecas++;
                         } else {
                             break;
@@ -350,8 +346,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                     if (contadorPecas == 3) {
                         if (pecaAtual == 'C') {
                             pontosP1++;
-                        }
-                        else {
+                        } else {
                             pontosP2++;
                         }
                     }
@@ -385,7 +380,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
     @Override
     public int soltaEsfera(int idJogador, int orificioTorre) throws RemoteException {
         Jogador jogador = jogadores.get(idJogador);
-        if(jogador == null) {
+        if (jogador == null) {
             return 2; // Partida foi encerrada por timeout, por tanto o jogador não existe mais
         }
         Partida partida = jogador.partidaAtual;
@@ -407,8 +402,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
         if (partida.jogador1.id == jogador.id) {
             partida.jogador1Jogou = true;
-        }
-        else if (partida.jogador2.id == jogador.id) {
+        } else if (partida.jogador2.id == jogador.id) {
             partida.jogador2Jogou = true;
         }
 
@@ -422,7 +416,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
         partida.ultimasJogadas[1] = partida.ultimasJogadas[0];
         partida.ultimasJogadas[0] = orificioTorre;
 
-        if(partida.estado == 2) {
+        if (partida.estado == 2) {
             partida.estado = 1;
         } else if (partida.estado == 1) {
             partida.estado = 2;
