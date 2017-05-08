@@ -32,6 +32,7 @@ class Partida {
     boolean timeoutJogador2;
     boolean jogador1Jogou;
     boolean jogador2Jogou;
+    int timer;
 
     Partida() {
         for (int i = 0; i < 5; i++) {
@@ -48,6 +49,7 @@ class Partida {
         this.timeoutJogador2 = false;
         this.jogador1Jogou = false;
         this.jogador2Jogou = false;
+        this.timer = 0;
     }
 
 
@@ -95,8 +97,13 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                         partida.timerJogador1 = 0;
                         partida.jogador1Jogou = false;
                         t.cancel();
-                    } else if (partida.timerJogador1 == 60) {
+                    } else if (partida.timerJogador1 >= 60) {
                         partida.timeoutJogador1 = true;
+                        try {
+                            encerraPartida(jogador.id);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                         t.cancel();
                     }
                 } else {
@@ -105,8 +112,13 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                         partida.timerJogador2 = 0;
                         partida.jogador2Jogou = false;
                         t.cancel();
-                    } else if (partida.timerJogador2 == 60) {
+                    } else if (partida.timerJogador2 >= 60) {
                         partida.timeoutJogador2 = true;
+                        try {
+                            encerraPartida(jogador.id);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                         t.cancel();
                     }
                 }
@@ -124,6 +136,23 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
         }
 
         return partida.timeoutJogador1;
+    }
+
+    @Override
+    public void iniciarTimerPartida(int idJogador) throws RemoteException {
+        Jogador jogador = jogadores.get(idJogador);
+        Partida partida = jogador.partidaAtual;
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                partida.timer++;
+                if(partida.timer >= 120) {
+                   t.cancel();
+                }
+            }
+        }, 0, 1000);
     }
 
     @Override
@@ -159,12 +188,22 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
     @Override
     public int encerraPartida(int idJogador) throws RemoteException {
         try {
+            Jogador jogador = jogadores.get(idJogador);
             Partida partida = jogadores.get(idJogador).partidaAtual;
-            jogadores.remove(partida.jogador1.id);
-            jogadores.remove(partida.jogador2.id);
-            jogadoresCount -= 2;
 
-            partidas.remove(partida);
+            final Timer t = new Timer();
+            t.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    jogadores.remove(partida.jogador1.id);
+                    jogadores.remove(partida.jogador2.id);
+                    jogadoresCount -= 2;
+
+                    partidas.remove(partida);
+                    t.cancel();
+                }
+            }, 60000, 1000);
+
             return 0;
         } catch (Exception e) {
             return -1;
@@ -173,11 +212,13 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
 
     @Override
     public int temPartida(int idJogador) throws RemoteException {
-        //TODO: FAZER TIMEOUT
-
         try {
             Jogador jogador = jogadores.get(idJogador);
             Partida partida = jogador.partidaAtual;
+
+            if(partida.timer >= 120) {
+                return -2;
+            }
 
             if (partida.estado == 0) {
                 return 0; // Partida não possui 2 jogadores ainda
@@ -311,8 +352,7 @@ public class DownUnder extends UnicastRemoteObject implements DownUnderInterface
                 }
             }
 
-            topoTabuleiro.append("Pontos do jogador "+partida.jogador1.nome+" : "+pontosP1+"\n");
-            topoTabuleiro.append("Pontos do jogador "+partida.jogador2.nome+" : "+pontosP2+"\n");
+            topoTabuleiro.append("Pontos do jogador ").append(partida.jogador1.nome).append(" : ").append(pontosP1).append("\n").append("Pontos do jogador ").append(partida.jogador2.nome).append(" : ").append(pontosP2).append("\n");
 
             return String.valueOf(topoTabuleiro);
         }

@@ -33,6 +33,11 @@ public class DownUnderClient {
                 TimeUnit.SECONDS.sleep(1);
                 temPartida = downunder.temPartida(idJogador);
             }
+            if(temPartida == -2) {
+                System.out.println("Tempo de espera (2 minutos) esgotado.");
+                downunder.encerraPartida(idJogador);
+                System.exit(0);
+            }
             System.out.println("Partida criada, seu oponente é: " + downunder.obtemOponente(idJogador));
 
             char pecaJogador = 'C';
@@ -63,7 +68,6 @@ public class DownUnderClient {
                     TimeUnit.SECONDS.sleep(1);
                     if(downunder.obtemTimeoutOponente(idJogador)) {
                         System.out.println("Seu oponente ficou ocioso por 1 minuto. Você ganhou a partida!");
-                        downunder.encerraPartida(idJogador);
                         System.exit(0);
                     }
                     vezDoJogador = downunder.ehMinhaVez(idJogador);
@@ -83,7 +87,7 @@ public class DownUnderClient {
                 int userMovement = downunder.soltaEsfera(idJogador, userInput);
 
                 if (userMovement == 2) {
-                    System.out.println("Você ficou ocioso por 60 segundos e por tanto perdeu a partida.");
+                    System.out.println("Você ficou ocioso por 1 minuto e perdeu a partida.");
                     System.exit(0);
                 }
                 while (userMovement != 1) {

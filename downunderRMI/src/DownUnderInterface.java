@@ -16,4 +16,5 @@ public interface DownUnderInterface extends Remote {
     // Métodos de timer:
     void iniciarTimerJogador(int idJogador) throws RemoteException;
     boolean obtemTimeoutOponente(int idJogador) throws RemoteException;
+    void iniciarTimerPartida(int idJogador) throws RemoteException;
 }
